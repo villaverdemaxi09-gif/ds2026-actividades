@@ -4,6 +4,7 @@ let catalogo = [
     { isbn: "2", titulo: "1984", autor: "Orwell", precio: 200, disponible: false },
     { isbn: "3", titulo: "It", autor: "Stephen King", precio: 300, disponible: true }
 ];
+// ✔️ Funciones tipadas correctamente
 function buscarPorAutor(autor) {
     return catalogo.filter(libro => libro.autor.toLowerCase().includes(autor.toLowerCase()));
 }
@@ -17,12 +18,14 @@ function precioPromedio(libros) {
     }
     return libros.length ? suma / libros.length : 0;
 }
+// ✔️ DOM tipado
 const lista = document.getElementById("listado");
 const stats = document.getElementById("stats");
 const input = document.getElementById("filtroAutor");
 const btnFiltrar = document.getElementById("filtrar");
 const btnDisponibles = document.getElementById("mostrarDisponibles");
 const btnTodos = document.getElementById("mostrarTodos");
+// ✔️ Render tipado
 function renderizar(libros) {
     let html = "";
     for (let libro of libros) {
@@ -31,6 +34,7 @@ function renderizar(libros) {
     lista.innerHTML = html;
     stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
 }
+// ✔️ Eventos
 btnFiltrar.addEventListener("click", () => {
     renderizar(buscarPorAutor(input.value));
 });
@@ -40,4 +44,5 @@ btnDisponibles.addEventListener("click", () => {
 btnTodos.addEventListener("click", () => {
     renderizar(catalogo);
 });
+// ✔️ Render inicial
 renderizar(catalogo);
