@@ -2,7 +2,8 @@ const input = document.getElementById("altura") as HTMLInputElement;
 const boton = document.getElementById("generar") as HTMLButtonElement;
 const resultado = document.getElementById("resultado") as HTMLElement;
 
-function generarAsteriscos(n: string): string {
+// Función tipada correctamente
+function generarAsteriscos(n: number): string {
     let arbol: string = "";
 
     for (let i: number = 1; i <= n; i++) {
@@ -12,11 +13,12 @@ function generarAsteriscos(n: string): string {
     return arbol;
 }
 
-boton.addEventListener("click", function () {
+// Evento del botón
+boton.addEventListener("click", () => {
+    const altura: number = Number(input.value);
 
-    let altura: number = Number(input.value);
-
-    if (!altura || altura < 1) {
+    // Validación correcta
+    if (isNaN(altura) || altura < 1) {
         resultado.textContent = "Por favor ingresá un número válido mayor a 0";
         return;
     }
