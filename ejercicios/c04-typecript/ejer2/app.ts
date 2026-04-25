@@ -13,6 +13,7 @@ let catalogo: Libro[] = [
     { isbn: "3", titulo: "It", autor: "Stephen King", precio: 300, disponible: true }
 ];
 
+// ✔️ Funciones tipadas correctamente
 function buscarPorAutor(autor: string): Libro[] {
     return catalogo.filter(libro =>
         libro.autor.toLowerCase().includes(autor.toLowerCase())
@@ -24,13 +25,16 @@ function librosDisponibles(): Libro[] {
 }
 
 function precioPromedio(libros: Libro[]): number {
-    let suma = 0;
+    let suma: number = 0;
+
     for (let libro of libros) {
         suma += libro.precio;
     }
+
     return libros.length ? suma / libros.length : 0;
 }
 
+// ✔️ DOM tipado
 const lista = document.getElementById("listado") as HTMLUListElement;
 const stats = document.getElementById("stats") as HTMLElement;
 const input = document.getElementById("filtroAutor") as HTMLInputElement;
@@ -38,8 +42,9 @@ const btnFiltrar = document.getElementById("filtrar") as HTMLButtonElement;
 const btnDisponibles = document.getElementById("mostrarDisponibles") as HTMLButtonElement;
 const btnTodos = document.getElementById("mostrarTodos") as HTMLButtonElement;
 
+// ✔️ Render tipado
 function renderizar(libros: Libro[]): void {
-    let html = "";
+    let html: string = "";
 
     for (let libro of libros) {
         html += `<li>${libro.titulo} - ${libro.autor} - $${libro.precio}</li>`;
@@ -49,6 +54,7 @@ function renderizar(libros: Libro[]): void {
     stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
 }
 
+// ✔️ Eventos
 btnFiltrar.addEventListener("click", () => {
     renderizar(buscarPorAutor(input.value));
 });
@@ -61,4 +67,5 @@ btnTodos.addEventListener("click", () => {
     renderizar(catalogo);
 });
 
+// ✔️ Render inicial
 renderizar(catalogo);
