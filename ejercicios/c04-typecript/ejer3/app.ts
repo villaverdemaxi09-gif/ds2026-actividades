@@ -7,27 +7,46 @@ interface Libro {
     genero?: string;
 }
 
-// ARRAY EN MEMORIA
 let catalogo: Libro[] = [
-    { isbn: "1", titulo: "1984", autor: "Orwell", precio: 200, disponible: true },
-    { isbn: "2", titulo: "It", autor: "Stephen King", precio: 300, disponible: false }
+    { isbn: "1", titulo: "El principito", autor: "Saint-Exupery", precio: 100, disponible: true },
+    { isbn: "2", titulo: "1984", autor: "Orwell", precio: 200, disponible: false }
 ];
 
 // DOM
-const lista = document.getElementById("listado") as HTMLElement;
+const lista = document.getElementById("listado") as HTMLUListElement;
 const stats = document.getElementById("stats") as HTMLElement;
-const errorDiv = document.getElementById("errorForm") as HTMLElement;
+const inputFiltro = document.getElementById("filtroAutor") as HTMLInputElement;
 
-// INPUTS
+const btnFiltrar = document.getElementById("filtrar") as HTMLButtonElement;
+const btnDisponibles = document.getElementById("mostrarDisponibles") as HTMLButtonElement;
+const btnTodos = document.getElementById("mostrarTodos") as HTMLButtonElement;
+
+// FORM
 const inputTitulo = document.getElementById("titulo") as HTMLInputElement;
 const inputAutor = document.getElementById("autor") as HTMLInputElement;
 const inputPrecio = document.getElementById("precio") as HTMLInputElement;
-const inputGenero = document.getElementById("genero") as HTMLInputElement;
 const inputDisponible = document.getElementById("disponible") as HTMLInputElement;
-
 const btnAgregar = document.getElementById("agregar") as HTMLButtonElement;
+const errorForm = document.getElementById("errorForm") as HTMLElement;
 
-// FUNCIONES
+// FUNCIONES EJ2 reutilizadas
+function buscarPorAutor(autor: string): Libro[] {
+    return catalogo.filter(l =>
+        l.autor.toLowerCase().includes(autor.toLowerCase())
+    );
+}
+
+function librosDisponibles(): Libro[] {
+    return catalogo.filter(l => l.disponible);
+}
+
+function precioPromedio(libros: Libro[]): number {
+    let suma = 0;
+    for (let l of libros) suma += l.precio;
+    return libros.length ? suma / libros.length : 0;
+}
+
+// NUEVAS FUNCIONES (ABM)
 
 function agregarLibro(libro: Libro): void {
     catalogo.push(libro);
@@ -35,74 +54,81 @@ function agregarLibro(libro: Libro): void {
 }
 
 function eliminarLibro(isbn: string): void {
-    catalogo = catalogo.filter(libro => libro.isbn !== isbn);
+    catalogo = catalogo.filter(l => l.isbn !== isbn);
     renderizar(catalogo);
 }
 
-function precioPromedio(libros: Libro[]): number {
-    let suma = 0;
-    for (let l of libros) {
-        suma += l.precio;
-    }
-    return libros.length ? suma / libros.length : 0;
-}
-
-function renderizar(libros: Libro[]): void {
-    lista.innerHTML = "";
-
-    for (let libro of libros) {
-        lista.innerHTML += `
-            <li>
-                ${libro.titulo} - ${libro.autor} - $${libro.precio}
-                (${libro.disponible ? "Disponible" : "No disponible"})
-                <button onclick="eliminarLibro('${libro.isbn}')">Eliminar</button>
-            </li>
-        `;
-    }
-
-    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
-}
-
 function validarFormulario(): Libro | null {
-    let titulo = inputTitulo.value.trim();
-    let autor = inputAutor.value.trim();
-    let precio = Number(inputPrecio.value);
-    let genero = inputGenero.value.trim();
-    let disponible = inputDisponible.checked;
+    const titulo = inputTitulo.value.trim();
+    const autor = inputAutor.value.trim();
+    const precio = Number(inputPrecio.value);
+    const disponible = inputDisponible.checked;
 
-    if (!titulo || !autor || precio <= 0) {
-        errorDiv.textContent = "Datos inválidos";
+    if (!titulo || !autor || isNaN(precio) || precio <= 0) {
         return null;
     }
 
-    errorDiv.textContent = "";
-
-    return {
+    const nuevoLibro: Libro = {
         isbn: "AUTO-" + Date.now(),
         titulo,
         autor,
         precio,
-        disponible,
-        genero: genero || undefined
+        disponible
     };
+
+    return nuevoLibro;
 }
 
-// EVENTO AGREGAR
+// RENDER
+function renderizar(libros: Libro[]): void {
+    let html = "";
+
+    for (let l of libros) {
+        html += `
+        <li>
+            ${l.titulo} - ${l.autor} - $${l.precio}
+            <button onclick="eliminarLibro('${l.isbn}')">Eliminar</button>
+        </li>`;
+    }
+
+    lista.innerHTML = html;
+    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
+}
+
+// EVENTOS
+
+btnFiltrar.addEventListener("click", () => {
+    renderizar(buscarPorAutor(inputFiltro.value));
+});
+
+btnDisponibles.addEventListener("click", () => {
+    renderizar(librosDisponibles());
+});
+
+btnTodos.addEventListener("click", () => {
+    renderizar(catalogo);
+});
 
 btnAgregar.addEventListener("click", () => {
     const libro = validarFormulario();
 
-    if (!libro) return;
+    if (!libro) {
+        errorForm.textContent = "Datos inválidos. Revisá los campos.";
+        return;
+    }
 
+    errorForm.textContent = "";
     agregarLibro(libro);
 
     // limpiar form
     inputTitulo.value = "";
     inputAutor.value = "";
     inputPrecio.value = "";
-    inputGenero.value = "";
     inputDisponible.checked = false;
 });
 
-// INICIAL
+// inicial
 renderizar(catalogo);
+
+// 
+(window as any).eliminarLibro = eliminarLibro;

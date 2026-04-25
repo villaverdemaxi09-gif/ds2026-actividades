@@ -1,81 +1,99 @@
 "use strict";
-// ARRAY EN MEMORIA
 let catalogo = [
-    { isbn: "1", titulo: "1984", autor: "Orwell", precio: 200, disponible: true },
-    { isbn: "2", titulo: "It", autor: "Stephen King", precio: 300, disponible: false }
+    { isbn: "1", titulo: "El principito", autor: "Saint-Exupery", precio: 100, disponible: true },
+    { isbn: "2", titulo: "1984", autor: "Orwell", precio: 200, disponible: false }
 ];
 // DOM
 const lista = document.getElementById("listado");
 const stats = document.getElementById("stats");
-const errorDiv = document.getElementById("errorForm");
-// INPUTS
+const inputFiltro = document.getElementById("filtroAutor");
+const btnFiltrar = document.getElementById("filtrar");
+const btnDisponibles = document.getElementById("mostrarDisponibles");
+const btnTodos = document.getElementById("mostrarTodos");
+// FORM
 const inputTitulo = document.getElementById("titulo");
 const inputAutor = document.getElementById("autor");
 const inputPrecio = document.getElementById("precio");
-const inputGenero = document.getElementById("genero");
 const inputDisponible = document.getElementById("disponible");
 const btnAgregar = document.getElementById("agregar");
-// FUNCIONES
+const errorForm = document.getElementById("errorForm");
+// FUNCIONES EJ2 reutilizadas
+function buscarPorAutor(autor) {
+    return catalogo.filter(l => l.autor.toLowerCase().includes(autor.toLowerCase()));
+}
+function librosDisponibles() {
+    return catalogo.filter(l => l.disponible);
+}
+function precioPromedio(libros) {
+    let suma = 0;
+    for (let l of libros)
+        suma += l.precio;
+    return libros.length ? suma / libros.length : 0;
+}
+// NUEVAS FUNCIONES (ABM)
 function agregarLibro(libro) {
     catalogo.push(libro);
     renderizar(catalogo);
 }
 function eliminarLibro(isbn) {
-    catalogo = catalogo.filter(libro => libro.isbn !== isbn);
+    catalogo = catalogo.filter(l => l.isbn !== isbn);
     renderizar(catalogo);
 }
-function precioPromedio(libros) {
-    let suma = 0;
-    for (let l of libros) {
-        suma += l.precio;
-    }
-    return libros.length ? suma / libros.length : 0;
-}
-function renderizar(libros) {
-    lista.innerHTML = "";
-    for (let libro of libros) {
-        lista.innerHTML += `
-            <li>
-                ${libro.titulo} - ${libro.autor} - $${libro.precio}
-                (${libro.disponible ? "Disponible" : "No disponible"})
-                <button onclick="eliminarLibro('${libro.isbn}')">Eliminar</button>
-            </li>
-        `;
-    }
-    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
-}
 function validarFormulario() {
-    let titulo = inputTitulo.value.trim();
-    let autor = inputAutor.value.trim();
-    let precio = Number(inputPrecio.value);
-    let genero = inputGenero.value.trim();
-    let disponible = inputDisponible.checked;
-    if (!titulo || !autor || precio <= 0) {
-        errorDiv.textContent = "Datos inválidos";
+    const titulo = inputTitulo.value.trim();
+    const autor = inputAutor.value.trim();
+    const precio = Number(inputPrecio.value);
+    const disponible = inputDisponible.checked;
+    if (!titulo || !autor || isNaN(precio) || precio <= 0) {
         return null;
     }
-    errorDiv.textContent = "";
-    return {
+    const nuevoLibro = {
         isbn: "AUTO-" + Date.now(),
         titulo,
         autor,
         precio,
-        disponible,
-        genero: genero || undefined
+        disponible
     };
+    return nuevoLibro;
 }
-// EVENTO AGREGAR
+// RENDER
+function renderizar(libros) {
+    let html = "";
+    for (let l of libros) {
+        html += `
+        <li>
+            ${l.titulo} - ${l.autor} - $${l.precio}
+            <button onclick="eliminarLibro('${l.isbn}')">Eliminar</button>
+        </li>`;
+    }
+    lista.innerHTML = html;
+    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
+}
+// EVENTOS
+btnFiltrar.addEventListener("click", () => {
+    renderizar(buscarPorAutor(inputFiltro.value));
+});
+btnDisponibles.addEventListener("click", () => {
+    renderizar(librosDisponibles());
+});
+btnTodos.addEventListener("click", () => {
+    renderizar(catalogo);
+});
 btnAgregar.addEventListener("click", () => {
     const libro = validarFormulario();
-    if (!libro)
+    if (!libro) {
+        errorForm.textContent = "Datos inválidos. Revisá los campos.";
         return;
+    }
+    errorForm.textContent = "";
     agregarLibro(libro);
     // limpiar form
     inputTitulo.value = "";
     inputAutor.value = "";
     inputPrecio.value = "";
-    inputGenero.value = "";
     inputDisponible.checked = false;
 });
-// INICIAL
+// inicial
 renderizar(catalogo);
+// 
+window.eliminarLibro = eliminarLibro;
