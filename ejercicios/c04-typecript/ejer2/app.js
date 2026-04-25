@@ -19,17 +19,18 @@ function precioPromedio(libros) {
 }
 const lista = document.getElementById("listado");
 const stats = document.getElementById("stats");
-function renderizar(libros) {
-    lista.innerHTML = "";
-    for (let libro of libros) {
-        lista.innerHTML += `<li>${libro.titulo} - ${libro.autor} - $${libro.precio}</li>`;
-    }
-    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
-}
 const input = document.getElementById("filtroAutor");
 const btnFiltrar = document.getElementById("filtrar");
 const btnDisponibles = document.getElementById("mostrarDisponibles");
 const btnTodos = document.getElementById("mostrarTodos");
+function renderizar(libros) {
+    let html = "";
+    for (let libro of libros) {
+        html += `<li>${libro.titulo} - ${libro.autor} - $${libro.precio}</li>`;
+    }
+    lista.innerHTML = html;
+    stats.textContent = `Cantidad: ${libros.length} | Promedio: $${precioPromedio(libros)}`;
+}
 btnFiltrar.addEventListener("click", () => {
     renderizar(buscarPorAutor(input.value));
 });
