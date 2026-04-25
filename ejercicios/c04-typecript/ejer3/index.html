@@ -1,0 +1,29 @@
+<h1>Catálogo</h1>
+
+<!-- FORMULARIO -->
+<h3>Agregar libro</h3>
+
+<input type="text" id="titulo" placeholder="Título">
+<input type="text" id="autor" placeholder="Autor">
+<input type="number" id="precio" placeholder="Precio">
+<input type="text" id="genero" placeholder="Género (opcional)">
+<label>
+    <input type="checkbox" id="disponible"> Disponible
+</label>
+
+<button id="agregar">Agregar</button>
+
+<div id="errorForm"></div>
+
+<hr>
+
+<!-- CONTROLES DEL EJ 2 -->
+<input type="text" id="filtroAutor">
+<button id="filtrar">Filtrar</button>
+<button id="mostrarDisponibles">Solo disponibles</button>
+<button id="mostrarTodos">Ver todos</button>
+
+<ul id="listado"></ul>
+<p id="stats"></p>
+
+<script src="app.js"></script>
