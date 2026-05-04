@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ej3 - Buscador de libros</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 700px;
+        margin: 40px auto;
+      }
+      .buscador {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      input {
+        flex: 1;
+        padding: 8px;
+        font-size: 16px;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      #error {
+        display: none;
+        color: red;
+      }
+      #cargando {
+        display: none;
+        color: gray;
+      }
+      .tarjeta {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      .tarjeta h3 {
+        margin: 0 0 6px 0;
+      }
+      .tarjeta p {
+        margin: 2px 0;
+        color: #555;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ejercicio 3 — Buscador de libros</h1>
+
+    <div class="buscador">
+      <input type="text" id="buscador" placeholder="Buscá un libro..." />
+      <button id="btn-buscar">Buscar</button>
+    </div>
+
+    <p id="error"></p>
+    <p id="cargando">Buscando...</p>
+    <div id="resultados"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
