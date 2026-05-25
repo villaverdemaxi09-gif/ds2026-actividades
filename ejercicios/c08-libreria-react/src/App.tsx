@@ -7,6 +7,27 @@ type LibroCardProps = {
   imagen: string
 }
 
+function Navbar() {
+  return (
+    <nav className="navbar navbar-dark bg-dark px-4">
+      <span className="navbar-brand fw-bold fs-4">LibreriaDS</span>
+      <div className="d-flex gap-3">
+        <a href="#" className="text-white text-decoration-none">Inicio</a>
+        <a href="#" className="text-white text-decoration-none">Catalogo</a>
+        <a href="#" className="text-white text-decoration-none">Contacto</a>
+      </div>
+    </nav>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="bg-dark text-white text-center py-4 mt-5">
+      <p className="mb-0">LibreriaDS &copy; 2026 - Todos los derechos reservados</p>
+    </footer>
+  )
+}
+
 function LibroCard({ titulo, autor, precio, imagen }: LibroCardProps) {
   const [likes, setLikes] = useState<number>(0)
 
@@ -38,6 +59,8 @@ const libros = [
 function App() {
   return (
     <>
+      <Navbar />
+
       <div className="bg-dark text-white py-5 text-center">
         <h1 className="display-4 fw-bold">LibreriaDS</h1>
         <p className="lead">Los mejores libros al mejor precio</p>
@@ -59,6 +82,8 @@ function App() {
           ))}
         </div>
       </div>
+
+      <Footer />
     </>
   )
 }
