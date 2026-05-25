@@ -29,7 +29,7 @@ function Footer() {
 }
 
 function LibroCard({ titulo, autor, precio, imagen }: LibroCardProps) {
-  const [likes, setLikes] = useState<number>(0)
+  const [liked, setLiked] = useState<boolean>(false)
 
   return (
     <div className="card h-100">
@@ -39,10 +39,10 @@ function LibroCard({ titulo, autor, precio, imagen }: LibroCardProps) {
         <p className="card-text text-muted">{autor}</p>
         <p className="card-text fw-bold">${precio.toLocaleString()}</p>
         <button
-          className="btn btn-outline-danger mt-auto"
-          onClick={() => setLikes(likes + 1)}
+          className={`btn mt-auto ${liked ? 'btn-danger' : 'btn-outline-danger'}`}
+          onClick={() => setLiked(!liked)}
         >
-          Me gusta ({likes})
+          {liked ? '❤️ Me gusta' : '🤍 Me gusta'}
         </button>
       </div>
     </div>
