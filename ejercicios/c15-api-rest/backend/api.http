@@ -3,25 +3,53 @@
 ### Listar todos los libros — 200
 GET {{baseUrl}}/api/libros
 
-### Listar solamente los libros disponibles — 200
+### Filtrar libros disponibles — 200
 GET {{baseUrl}}/api/libros?disponible=true
 
-### Obtener un libro por ID — 200
+### Obtener libro por ID — 200
 GET {{baseUrl}}/api/libros/1
 
-### Obtener un libro inexistente — 404
+### Obtener libro inexistente — 404
 GET {{baseUrl}}/api/libros/999
 
-### Listar todos los autores — 200
+### Crear libro — 201
+# @name crearLibro
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "autor": "George Orwell",
+  "precio": 7500,
+  "imagen": "https://...",
+  "disponible": true
+}
+
+### Actualizar libro creado — 200
+PUT {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "autor": "George Orwell",
+  "precio": 8000,
+  "imagen": "https://...",
+  "disponible": false
+}
+
+### Eliminar libro creado — 204
+DELETE {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+
+### Listar autores — 200
 GET {{baseUrl}}/api/autores
 
-### Obtener un autor por ID — 200
+### Obtener autor por ID — 200
 GET {{baseUrl}}/api/autores/1
 
-### Obtener un autor inexistente — 404
+### Obtener autor inexistente — 404
 GET {{baseUrl}}/api/autores/999
 
-### Crear un autor — 201
+### Crear autor — 201
 # @name crearAutor
 POST {{baseUrl}}/api/autores
 Content-Type: application/json
@@ -31,7 +59,7 @@ Content-Type: application/json
   "nacionalidad": "Argentina"
 }
 
-### Actualizar el autor recién creado — 200
+### Actualizar autor creado — 200
 PUT {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
 Content-Type: application/json
 
@@ -40,8 +68,5 @@ Content-Type: application/json
   "nacionalidad": "Argentina"
 }
 
-### Eliminar el autor recién creado — 204
+### Eliminar autor creado — 204
 DELETE {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
-
-### Buscar el autor después de eliminarlo — 404
-GET {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
