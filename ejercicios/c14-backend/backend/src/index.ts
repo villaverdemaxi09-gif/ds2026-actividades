@@ -1,0 +1,61 @@
+import express from "express";
+
+const app = express();
+const PORT = 3000;
+
+interface Libro {
+  id: number;
+  titulo: string;
+  autor: string;
+  precio: number;
+  imagen: string;
+  disponible: boolean;
+}
+
+const libros: Libro[] = [
+  {
+    id: 1,
+    titulo: "El Aleph",
+    autor: "Jorge Luis Borges",
+    precio: 15000,
+    imagen: "https://covers.openlibrary.org/b/id/8231856-M.jpg",
+    disponible: true,
+  },
+  {
+    id: 2,
+    titulo: "Rayuela",
+    autor: "Julio Cortazar",
+    precio: 18000,
+    imagen: "https://covers.openlibrary.org/b/id/8226574-M.jpg",
+    disponible: true,
+  },
+  {
+    id: 3,
+    titulo: "Ficciones",
+    autor: "Jorge Luis Borges",
+    precio: 14000,
+    imagen: "https://covers.openlibrary.org/b/id/8294930-M.jpg",
+    disponible: false,
+  },
+  {
+    id: 4,
+    titulo: "Cien anos de soledad",
+    autor: "Gabriel Garcia Marquez",
+    precio: 20000,
+    imagen: "https://covers.openlibrary.org/b/id/8228691-M.jpg",
+    disponible: true,
+  },
+];
+
+app.get("/", (_req, res) => {
+  res.json({ mensaje: "API de la Librería — ¡hola desde un contenedor! 🐳" });
+});
+
+app.get("/libros", (_req, res) => {
+  res.json(libros);
+});
+
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});
+
