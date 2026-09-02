@@ -1,0 +1,42 @@
+.custom-header {
+  background-color: var(--surface);
+  box-shadow: var(--shadow-sm);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+}
+
+.custom-header .brand-text {
+  color: var(--text-main);
+  font-size: 1.25rem;
+}
+
+.custom-header .navbar-brand:hover .brand-text {
+  color: var(--primary-hover);
+}
+
+.custom-header .nav-link {
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.custom-header .nav-link:hover {
+  background-color: var(--crema);
+  color: var(--primary-hover);
+}
+
+.custom-header .nav-link.active {
+  color: var(--bordo);
+  font-weight: 600;
+  background-color: var(--crema);
+}
+
+.custom-header .navbar-toggler {
+  border-color: var(--nude);
+}
+
+.custom-header .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.15rem var(--nude);
+}
