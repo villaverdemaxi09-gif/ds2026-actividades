@@ -1,0 +1,72 @@
+@baseUrl = http://localhost:3000
+
+### Listar todos los libros — 200
+GET {{baseUrl}}/api/libros
+
+### Filtrar libros disponibles — 200
+GET {{baseUrl}}/api/libros?disponible=true
+
+### Obtener libro por ID — 200
+GET {{baseUrl}}/api/libros/1
+
+### Obtener libro inexistente — 404
+GET {{baseUrl}}/api/libros/999
+
+### Crear libro — 201
+# @name crearLibro
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "autor": "George Orwell",
+  "precio": 7500,
+  "imagen": "https://...",
+  "disponible": true
+}
+
+### Actualizar libro creado — 200
+PUT {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "titulo": "1984",
+  "autor": "George Orwell",
+  "precio": 8000,
+  "imagen": "https://...",
+  "disponible": false
+}
+
+### Eliminar libro creado — 204
+DELETE {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+
+### Listar autores — 200
+GET {{baseUrl}}/api/autores
+
+### Obtener autor por ID — 200
+GET {{baseUrl}}/api/autores/1
+
+### Obtener autor inexistente — 404
+GET {{baseUrl}}/api/autores/999
+
+### Crear autor — 201
+# @name crearAutor
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Julio Cortázar",
+  "nacionalidad": "Argentina"
+}
+
+### Actualizar autor creado — 200
+PUT {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "nombre": "Julio Florencio Cortázar",
+  "nacionalidad": "Argentina"
+}
+
+### Eliminar autor creado — 204
+DELETE {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
