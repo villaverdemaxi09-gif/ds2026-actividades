@@ -1,0 +1,133 @@
+@baseUrl = http://localhost:3000
+
+### LIBROS — listar — 200
+GET {{baseUrl}}/api/libros
+
+### LIBROS — filtrar disponibles — 200
+GET {{baseUrl}}/api/libros?disponible=true
+
+### LIBROS — detalle con autor y categorías — 200
+GET {{baseUrl}}/api/libros/1
+
+### LIBROS — id inválido — 400
+GET {{baseUrl}}/api/libros/abc
+
+### LIBROS — inexistente — 404
+GET {{baseUrl}}/api/libros/9999
+
+### LIBROS — body inválido, falta título — 400
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "precio": 15000,
+  "imagen": "https://example.com/libro.jpg",
+  "disponible": true,
+  "autorId": 1
+}
+
+### LIBROS — crear correctamente — 201
+# @name crearLibro
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Libro prueba C17",
+  "precio": 15000,
+  "imagen": "https://example.com/libro.jpg",
+  "disponible": true,
+  "autorId": 1
+}
+
+### LIBROS — actualizar creado — 200
+PUT {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "precio": 18000,
+  "disponible": false
+}
+
+### LIBROS — actualizar inexistente — 404
+PUT {{baseUrl}}/api/libros/9999
+Content-Type: application/json
+
+{
+  "precio": 18000
+}
+
+### LIBROS — autor inexistente — error controlado
+POST {{baseUrl}}/api/libros
+Content-Type: application/json
+
+{
+  "titulo": "Libro sin autor válido",
+  "precio": 10000,
+  "imagen": "https://example.com/libro.jpg",
+  "autorId": 9999
+}
+
+### LIBROS — eliminar creado — 204
+DELETE {{baseUrl}}/api/libros/{{crearLibro.response.body.$.id}}
+
+
+### AUTORES — listar — 200
+GET {{baseUrl}}/api/autores
+
+### AUTORES — detalle — 200
+GET {{baseUrl}}/api/autores/1
+
+### AUTORES — id inválido — 400
+GET {{baseUrl}}/api/autores/abc
+
+### AUTORES — inexistente — 404
+GET {{baseUrl}}/api/autores/9999
+
+### AUTORES — body inválido — 400
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": ""
+}
+
+### AUTORES — crear — 201
+# @name crearAutor
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Autor temporal C17",
+  "nacionalidad": "Argentina"
+}
+
+### AUTORES — duplicado — 409
+POST {{baseUrl}}/api/autores
+Content-Type: application/json
+
+{
+  "nombre": "Jorge Luis Borges",
+  "nacionalidad": "Argentina"
+}
+
+### AUTORES — actualizar creado — 200
+PUT {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "nacionalidad": "Uruguay"
+}
+
+### AUTORES — actualizar inexistente — 404
+PUT {{baseUrl}}/api/autores/9999
+Content-Type: application/json
+
+{
+  "nacionalidad": "Argentina"
+}
+
+### AUTORES — intentar eliminar autor con libros — 409
+DELETE {{baseUrl}}/api/autores/1
+
+### AUTORES — eliminar autor temporal — 204
+DELETE {{baseUrl}}/api/autores/{{crearAutor.response.body.$.id}}
