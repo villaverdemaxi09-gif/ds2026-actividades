@@ -1,0 +1,22 @@
+.libros {
+  padding: 4rem 0;
+}
+
+.titulo {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.grid-libros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.boton {
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
