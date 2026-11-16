@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Form, InputGroup, Button } from 'react-bootstra
 import type { FormEvent } from 'react';
 import { useBusqueda } from '../../context/BusquedaContext';
 import { useAuth } from '../../context/AuthContext';
+import libroIcono from '../../assets/libroIcono.png';
 import '../../assets/styles/Header.css';
 
 function Header() {
@@ -30,7 +31,7 @@ function Header() {
       <Container>
         <Navbar.Brand href="/" className="d-flex align-items-center gap-2">
           <img
-            src="/src/assets/libroIcono.png"
+            src={libroIcono}
             alt="Logo"
             width="32"
             height="32"
